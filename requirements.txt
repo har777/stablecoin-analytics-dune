@@ -3,3 +3,4 @@ web3
 redis
 flask-cors
 python-dotenv
+gunicorn
