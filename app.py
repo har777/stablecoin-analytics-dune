@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_cors import cross_origin
 import redis
-from queries import get_all_blacklisted_events, get_all_unblacklisted_events, get_all_destroy_blacklisted_funds_events, get_all_mints, get_all_burns, get_all_transfers_involving_particular_user
+from queries import get_all_blacklisted_events, get_all_unblacklisted_events, get_all_destroy_blacklisted_funds_events, get_all_mints, get_all_burns, get_all_transfers_involving_particular_user, get_all_infinite_approvals_statistics
 
 from dotenv import load_dotenv
 
@@ -13,6 +13,7 @@ app = Flask(__name__)
 
 r = redis.Redis(host=os.getenv("REDIS_HOST"), port=int(os.getenv("REDIS_PORT")), password=os.getenv("REDIS_PASSWORD"))
 
+ttl = 60 * 60
 
 @app.route("/blacklisted_events")
 @cross_origin()
@@ -21,7 +22,7 @@ def blacklisted_events():
     data = r.get(key)
     if not data:
         data = get_all_blacklisted_events()
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
@@ -34,7 +35,7 @@ def unblacklisted_events():
     data = r.get(key)
     if not data:
         data = get_all_unblacklisted_events()
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
@@ -47,7 +48,7 @@ def destroyed_blacklisted_funds_events():
     data = r.get(key)
     if not data:
         data = get_all_destroy_blacklisted_funds_events()
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
@@ -60,7 +61,7 @@ def mint_events():
     data = r.get(key)
     if not data:
         data = get_all_mints()
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
@@ -73,7 +74,7 @@ def burn_events():
     data = r.get(key)
     if not data:
         data = get_all_burns()
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
@@ -86,7 +87,20 @@ def transfers_involving_user(user):
     data = r.get(key)
     if not data:
         data = get_all_transfers_involving_particular_user(user)
-        r.setex(key, 3600, json.dumps(data))
+        r.setex(key, ttl, json.dumps(data))
+    else:
+        data = json.loads(data)
+    return data
+
+
+@app.route("/infinite_approvals")
+@cross_origin()
+def infinite_approvals():
+    key = "infinite_approvals"
+    data = r.get(key)
+    if not data:
+        data = get_all_infinite_approvals_statistics()
+        r.setex(key, ttl, json.dumps(data))
     else:
         data = json.loads(data)
     return data
