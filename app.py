@@ -3,7 +3,15 @@ import os
 from flask import Flask
 from flask_cors import cross_origin
 import redis
-from queries import get_all_blacklisted_events, get_all_unblacklisted_events, get_all_destroy_blacklisted_funds_events, get_all_mints, get_all_burns, get_all_transfers_involving_particular_user, get_all_infinite_approvals_statistics
+from queries import (
+    get_all_blacklisted_events,
+    get_all_unblacklisted_events,
+    get_all_destroy_blacklisted_funds_events,
+    get_all_mints,
+    get_all_burns,
+    get_all_transfers_involving_particular_user,
+    get_all_infinite_approvals_statistics,
+)
 
 from dotenv import load_dotenv
 
@@ -11,9 +19,14 @@ load_dotenv()
 
 app = Flask(__name__)
 
-r = redis.Redis(host=os.getenv("REDIS_HOST"), port=int(os.getenv("REDIS_PORT")), password=os.getenv("REDIS_PASSWORD"))
+r = redis.Redis(
+    host=os.getenv("REDIS_HOST"),
+    port=int(os.getenv("REDIS_PORT")),
+    password=os.getenv("REDIS_PASSWORD"),
+)
 
 ttl = 60 * 60
+
 
 @app.route("/blacklisted_events")
 @cross_origin()

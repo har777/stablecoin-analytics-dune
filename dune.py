@@ -25,7 +25,7 @@ def execute_query(query_id):
 
     url = make_api_url("query", "execute", query_id)
     response = requests.post(url, headers=HEADER)
-    execution_id = response.json()['execution_id']
+    execution_id = response.json()["execution_id"]
 
     return execution_id
 
@@ -78,7 +78,7 @@ def execute_query_with_params(query_id, param_dict):
 
     url = make_api_url("query", "execute", query_id)
     response = requests.post(url, headers=HEADER, json={"query_parameters": param_dict})
-    execution_id = response.json()['execution_id']
+    execution_id = response.json()["execution_id"]
 
     return execution_id
 

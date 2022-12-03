@@ -1,21 +1,31 @@
 import os
 import time
-from dune import execute_query, get_query_results, is_query_complete, execute_query_with_params
+from dune import (
+    execute_query,
+    get_query_results,
+    is_query_complete,
+    execute_query_with_params,
+)
 from utils import get_ens
 
 QUERY_TO_ID = {
     "tether": {
         "all_blacklisted_events": os.getenv("ALL_BLACKLISTED_EVENTS_QUERY_ID"),
         "all_unblacklisted_events": os.getenv("ALL_UNBLACKLISTED_EVENTS_QUERY_ID"),
-        "all_destroy_blacklisted_funds_events": os.getenv("ALL_DESTROY_BLACKLISTED_FUNDS_EVENTS_QUERY_ID"),
+        "all_destroy_blacklisted_funds_events": os.getenv(
+            "ALL_DESTROY_BLACKLISTED_FUNDS_EVENTS_QUERY_ID"
+        ),
         "all_mints": os.getenv("ALL_MINTS_QUERY_ID"),
         "all_burns": os.getenv("ALL_BURNS_QUERY_ID"),
-        "transfers_involving_particular_user": os.getenv("ALL_TRANSFERS_INVOLVING_PARTICULAR_USER_QUERY_ID"),
+        "transfers_involving_particular_user": os.getenv(
+            "ALL_TRANSFERS_INVOLVING_PARTICULAR_USER_QUERY_ID"
+        ),
         "infinite_approvals_statistics": os.getenv("INFINITE_APPROVALS_STATISTICS"),
     }
 }
 
 SLEEP_TIME = 5
+
 
 def get_all_blacklisted_events():
     execution_id = execute_query(QUERY_TO_ID["tether"]["all_blacklisted_events"])
@@ -76,7 +86,9 @@ def get_all_unblacklisted_events():
 
 
 def get_all_destroy_blacklisted_funds_events():
-    execution_id = execute_query(QUERY_TO_ID["tether"]["all_destroy_blacklisted_funds_events"])
+    execution_id = execute_query(
+        QUERY_TO_ID["tether"]["all_destroy_blacklisted_funds_events"]
+    )
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
@@ -168,8 +180,7 @@ def get_all_transfers_involving_particular_user(user):
         user = get_ens(user)
 
     execution_id = execute_query_with_params(
-        QUERY_TO_ID["tether"]["transfers_involving_particular_user"],
-        {"address": user}
+        QUERY_TO_ID["tether"]["transfers_involving_particular_user"], {"address": user}
     )
 
     while True:
