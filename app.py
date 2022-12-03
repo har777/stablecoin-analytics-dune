@@ -25,7 +25,7 @@ r = redis.Redis(
     password=os.getenv("REDIS_PASSWORD"),
 )
 
-ttl = 60 * 60
+ttl = int(os.getenv("CACHE_TTL"))
 
 
 @app.route("/blacklisted_events")
