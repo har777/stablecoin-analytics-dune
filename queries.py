@@ -20,7 +20,7 @@ def get_all_blacklisted_events():
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {
@@ -49,7 +49,7 @@ def get_all_unblacklisted_events():
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {
@@ -78,7 +78,7 @@ def get_all_destroy_blacklisted_funds_events():
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {
@@ -108,7 +108,7 @@ def get_all_mints():
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {
@@ -137,7 +137,7 @@ def get_all_burns():
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {
@@ -173,7 +173,7 @@ def get_all_transfers_involving_particular_user(user):
     while True:
         query_results = get_query_results(execution_id).json()
         if not is_query_complete(query_results):
-            time.sleep(1)
+            time.sleep(5)
             continue
 
         data = {

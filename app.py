@@ -11,7 +11,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-r = redis.Redis(host=os.getenv("REDIS_HOST"), port=int(os.getenv("REDIS_PORT")), db=0)
+r = redis.Redis(host=os.getenv("REDIS_HOST"), port=int(os.getenv("REDIS_PORT")), password=os.getenv("REDIS_PASSWORD"))
 
 
 @app.route("/blacklisted_events")
